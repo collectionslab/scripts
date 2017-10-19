@@ -11,9 +11,9 @@ import unicodecsv as csv
 data = []
 def collection():
     try:
-        collection_url = raw_input("Enter LOC url for item: ") #python2
+        collection_url = raw_input("Enter LOC url for collection: ") #python2
     except:
-        collection_url = input("Enter LOC url for item: ")#python3
+        collection_url = input("Enter LOC url for collection: ")#python3
     params = {} #lines 11-13 set the parameters for the urls
     params['fo'] = "json"
     params['c'] = '150'
