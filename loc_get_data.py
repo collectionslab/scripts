@@ -1,12 +1,20 @@
+#written by Niqui O'Neill October 18, 2017
+#This script allows users to download metadata from LOC digital collections and writes it to a csv named for the collection
+#It allows for users to either download a collection using that collection's URL with collection()
+#Or allows users to search loc.gov with query()
+#get_data() grabs all the results from a search, adds the contents to a list and writes the list to a csv file. 
+#This can easily be dumped to a json file by writing "data" to a json object instead of a csv
+#install requests and unicodecsv before running (pip install requests)(pip install unicodecsv)
+#to run $python loc_get_data.py
 import requests
 import unicodecsv as csv
 data = []
 def collection():
     try:
-        collection_url = raw_input("Enter LOC url for item: ")
+        collection_url = raw_input("Enter LOC url for item: ") #python2
     except:
-        collection_url = input("Enter LOC url for item: ")
-    params = {}
+        collection_url = input("Enter LOC url for item: ")#python3
+    params = {} #lines 11-13 set the parameters for the urls
     params['fo'] = "json"
     params['c'] = '150'
     collections_json = requests.get(collection_url, params=params).json()
@@ -14,18 +22,26 @@ def collection():
 
 def query():
     try:
-        query = raw_input("Enter Query String: ") #python2
+        query = raw_input("Enter Query String or URL: ") #python2
     except:
-        query = input("Enter Query String: ") #python3
-    query = query.replace(" ", "+")
-    url = "https://www.loc.gov/search/"
-    params = {}
-    params['fo'] = 'json'
-    params['q'] = query
-    params['all'] = 'true'
-    params['c'] = '150'
-    collections_json = requests.get(url, params=params).json()
-    get_data(collections_json)
+        query = input("Enter Query String or URL: ") #python3
+    if 'http' in query:
+	    params = {}
+	    params['fo'] = 'json'
+	    params['c'] = '150'
+	    collections_json = requests.get(query, params=params).json()
+	    print(requests.get(query, params=params).url)
+	    get_data(collections_json)
+    else:
+	    query = query.replace(" ", "+")
+	    url = "https://www.loc.gov/search/"
+	    params = {}
+	    params['fo'] = 'json'
+	    params['q'] = query
+	    params['all'] = 'true'
+	    params['c'] = '150'
+	    collections_json = requests.get(url, params=params).json()
+	    get_data(collections_json)
     
 def get_data(collections_json):
     x = 0
@@ -43,7 +59,7 @@ def get_data(collections_json):
     title=collections_json['facet_trail'][0]['value'].replace(" ", "_").replace("'", "").replace(".", "").replace(",", "").replace("+","_") #creates title for csv file created at end of script
     title = title+".csv" #adds extension
     total_records = collections_json['pagination']['of']
-    print("%s records collected out of %s total records" % (x, total_records))
+    print("%s records collected" % total_records)
     fieldnames = ['title', 'other_title'] #ensures that first two rows are title and other_title
     
     for row in data:
