@@ -45,7 +45,7 @@ def query():
     
 def get_data(collections_json):
     x = 0
-    #lines 10-19 based on code from https://github.com/LibraryOfCongress/data-exploration/blob/master/LOC.gov%20JSON%20API.ipynb
+    #lines 48-58 based on code from https://github.com/LibraryOfCongress/data-exploration/blob/master/LOC.gov%20JSON%20API.ipynb
     #Under heading "Why does it stop after 40?"
     while True: #As long as we have a next page, go and fetch it
         for collection in collections_json["results"]:
