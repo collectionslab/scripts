@@ -30,7 +30,6 @@ def query():
 	    params['fo'] = 'json'
 	    params['c'] = '150'
 	    collections_json = requests.get(query, params=params).json()
-	    print(requests.get(query, params=params).url)
 	    get_data(collections_json)
     else:
 	    query = query.replace(" ", "+")
