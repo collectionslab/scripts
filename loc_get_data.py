@@ -64,7 +64,7 @@ def get_data(collections_json):
     for row in data:
         for key, value in row.items():
             if type(value) == list and key != 'segments': #replaces list values in data with strings with items seperated by commas
-                value = ', '.join(value)
+                value = '; '.join(value)
                 row[key] = value         
 
     for row in data:
@@ -92,6 +92,9 @@ def main():
         query()
     elif "C" in type or "c" in type:
         collection()
-        
+    else:
+    	print("{} Entered\nNot Valid Option".format(type))
+    	main()
+    	  
 if __name__ == "__main__":
     main()
